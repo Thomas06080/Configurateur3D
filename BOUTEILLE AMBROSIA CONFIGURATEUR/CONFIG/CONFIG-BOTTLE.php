@@ -20,7 +20,7 @@
 
     <div id="info">
 
-        <div class="inter">
+        <div class="inter" style="width : 450px;">
 
             <span>Choisir un Produit:
                 <select class="select-css" id="body-models">
@@ -115,7 +115,7 @@
             controls.enablePan = false;
             controls.enableZoom = true;
             controls.minDistance = 1;
-            controls.maxDistance = 10;
+            controls.maxDistance = 5;
 
             controls.enableDamping = true;
             controls.dampingFactor = 0.2;
