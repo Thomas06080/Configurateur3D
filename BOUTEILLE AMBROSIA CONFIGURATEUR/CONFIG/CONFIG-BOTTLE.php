@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Configurateur Ambrosia</title>
+    <title>Configurateur</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <link type="text/css" rel="stylesheet" href="main.css">
@@ -9,12 +9,7 @@
 </head>
 
 <body>
-<?php
-//include_once("config.php");
-//$bdd = getbdd();
-//$produits = getProduit($bdd);
 
-?>
 
 <div class="parent">
 
@@ -34,18 +29,6 @@
 
             <br>
             <div class="grille" id="grille">
-
-                <a href="usdz/bottle-04.usdz"><img class="miniature" src="miniatures/belle-prune.jpg"></a>
-                <a href="usdz/bottle-05.usdz"><img class="miniature" src="miniatures/boree.jpg"></a>
-                <a href="usdz/bottle-02.usdz"><img class="miniature" src="miniatures/crepe.jpg"></a>
-                <a href="usdz/bottle-03.usdz"><img class="miniature" src="miniatures/cupcake.jpg"></a>
-                <br>
-                <a href="usdz/bottle-06.usdz"><img class="miniature" src="miniatures/euros.jpg"></a>
-                <a href="usdz/bottle-07.usdz"><img class="miniature" src="miniatures/notos.jpg"></a>
-                <a href="usdz/bottle-01.usdz"><img class="miniature" src="miniatures/super-beignet.jpg"></a>
-                <a href="usdz/bottle-08.usdz"><img class="miniature" src="miniatures/zephyr.jpg"></a>
-
-
             </div>
         </div>
     </div>
@@ -74,7 +57,7 @@
     var bodyMatSelect = document.getElementById('body-mat');
     var bodyModelSelect = document.getElementById('body-models');
     var grilleSelect = document.getElementById('grille')
-
+    var liens;
     var modelParts = {
         body: [],
     };
@@ -332,7 +315,7 @@
         loader.setDRACOLoader(dracoLoader);
         //liens des objets 3D
         if(bodyModelSelect.value === "Carte de visite"){
-            var liens = "models/gltf/carte/carte.gltf"
+            liens = "models/gltf/carte/carte.gltf"
         }else if(bodyModelSelect.value === "E-Liquide"){
             liens = "models/gltf/ambrosia/bouteille-ambrosia.gltf"
         }
@@ -537,15 +520,14 @@
             }else if(bodyModelSelect.value === "E-Liquide"){
                 bodyMatSelect.innerHTML=""
                 grilleSelect.style.display = ""
+                affichageGrille()
                 materialsLib.main.forEach(function (material) {
 
                     addOption(material.name, bodyMatSelect);
 
                 });
-
                 bodyMatSelect.selectedIndex = 0;
             }
-
 
     }
     bodyMatSelect.addEventListener('change', updateMaterials);
@@ -558,10 +540,28 @@
 
             modelParts.body.forEach(part => part.material = bodyMat);
         }else if (bodyModelSelect.value === "Carte de visite") {
-            bodyMat = materialsLib.Carte[bodyMatSelect.selectedIndex];
+            var bodyMatt = materialsLib.Carte[bodyMatSelect.selectedIndex];
 
-            modelParts.body.forEach(part => part.material = bodyMat);
+            modelParts.body.forEach(part => part.material = bodyMatt);
 
+        }
+    }
+//Affichage de la grille avec liens .usdz
+    function affichageGrille(){
+        let src={
+            0:'miniatures/belle-prune.jpg',
+            1:'miniatures/boree.jpg',
+            2:'miniatures/crepe.jpg',
+            3:'miniatures/cupcake.jpg',
+            4:'miniatures/euros.jpg',
+            5:'miniatures/notos.jpg',
+            6:'miniatures/super-beignet.jpg',
+            7:'miniatures/zephyr.jpg'
+        }
+        grilleSelect.style.display="";
+        grilleSelect.innerHTML=null;
+        for (let i = 0; i < 8; i++) {
+            grilleSelect.innerHTML+= '<a href="usdz/bottle-'+i+1+'.usdz">'+'<img class="miniature" src="'+src[i]+'"></a>'
         }
     }
 
