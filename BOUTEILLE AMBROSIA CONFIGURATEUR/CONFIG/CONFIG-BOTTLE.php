@@ -28,9 +28,9 @@
             <span>Choisissez parmis les nombreux choix de design: <select class="select-css" id="body-mat"></select></span>
 
             <br>
-            <div class="grille" id="grille">
-            </div>
+            <div class="grille" id="grille"></div>
         </div>
+        <a id="auto-rotate"><img id="img360" src="miniatures/rotate.png"></a>
     </div>
 </div>
 
@@ -57,14 +57,21 @@
     var bodyMatSelect = document.getElementById('body-mat');
     var bodyModelSelect = document.getElementById('body-models');
     var grilleSelect = document.getElementById('grille')
+    var rotate = document.getElementById('auto-rotate')
     var liens;
+    var n =0
     var modelParts = {
         body: [],
     };
 
     var scnCameraTarget = new THREE.Vector3();
 
-
+    //DEBUT addEventListener() List
+    bodyModelSelect.addEventListener('change', updateModel);
+    bodyMatSelect.addEventListener('change', updateMaterials);
+    bodyModelSelect.addEventListener('change', initMaterialSelectionMenus);
+    rotate.addEventListener("click",OnOffRotation)
+    //FIN addEventListener() List
     function init() {
 
 
@@ -98,7 +105,7 @@
             controls.enablePan = false;
             controls.enableZoom = true;
             controls.minDistance = 1;
-            controls.maxDistance = 5;
+            controls.maxDistance = 8;
 
             controls.enableDamping = true;
             controls.dampingFactor = 0.2;
@@ -114,7 +121,7 @@
 
             ////FOND IMAGE DE LA SCENE////
             scene = new THREE.Scene();
-            scene.background = new THREE.TextureLoader().load("textures/fond-noir.jpg"); // (Ciel)
+            scene.background = new THREE.TextureLoader().load("textures/gris.jpg"); // (Ciel)
             scene.backgroundSphere = true;
 
 
@@ -122,8 +129,8 @@
 
             ////SOL////
             meshFloor = new THREE.Mesh(
-                new THREE.PlaneGeometry(10, 10, 10, 10),
-                new THREE.MeshStandardMaterial({color: 0x0C0C0C, wireframe: false, roughness: 1.0,})
+                new THREE.CircleGeometry(2.5, 64),
+                new THREE.MeshStandardMaterial({color: 16777215, wireframe: false, roughness: 1.0,})
             );
             meshFloor.rotation.x -= Math.PI / 2;
             meshFloor.receiveShadow = true;
@@ -269,7 +276,7 @@
 
             update();
 
-            renderer.render(scene, scnCamera);
+            render()
 
         });
 
@@ -321,12 +328,10 @@
         }
 
         loader.load(liens, function (gltf) {
-
             objModel = gltf.scene.children[0];
 
-
             objModel.traverse(function (child) {
-
+                child.type="Mesh"
                 if (child.isMesh) {
                     child.material.envMap = envMap;
                 }
@@ -335,12 +340,13 @@
             scene.add(objModel);
 
             // car parts for material selection
-            modelParts.body.push(objModel.getObjectByName('body'));
+            if (objModel.getObjectByName('body')) {
+                modelParts.body.push(objModel.getObjectByName('body'));
+            }
 
             updateMaterials();
         });
     }
-    bodyModelSelect.addEventListener('change', updateModel);
 
     function initMaterials() {
 
@@ -530,8 +536,6 @@
             }
 
     }
-    bodyMatSelect.addEventListener('change', updateMaterials);
-    bodyModelSelect.addEventListener('change', initMaterialSelectionMenus);
 
     // set materials to the current values of the selection menus
     function updateMaterials() {
@@ -539,11 +543,12 @@
             var bodyMat = materialsLib.main[bodyMatSelect.selectedIndex];
 
             modelParts.body.forEach(part => part.material = bodyMat);
+
         }else if (bodyModelSelect.value === "Carte de visite") {
+
             var bodyMatt = materialsLib.Carte[bodyMatSelect.selectedIndex];
-
+            console.log(modelParts.body)
             modelParts.body.forEach(part => part.material = bodyMatt);
-
         }
     }
 //Affichage de la grille avec liens .usdz
@@ -581,18 +586,30 @@
     }
 
 
+    function OnOffRotation(){
+        n +=1
+        if (n === 1){
+        } else {
+            n =0
+        }
+        animate()
+    }
+
     function animate() {
-        requestAnimationFrame(animate);
-        controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
-        render();
+        if (n === 1) {
+            objModel.rotation.z += 0.01;
+            meshFloor.rotation.z -=0.01;
+            requestAnimationFrame(animate);
+            render()
+
+        } else {
+            render()
+        }
     }
 
 
     function render() {
-
         renderer.render(scene, scnCamera);
-
-
     }
 
     init();

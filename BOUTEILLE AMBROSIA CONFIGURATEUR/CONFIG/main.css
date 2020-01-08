@@ -40,8 +40,8 @@ canvas {
 #info {
 	position: absolute;
 	width:100%;
+	height: 100%;
 	top: 0px;
-	padding: 40px 40px 40px 10px;
 	box-sizing: border-box;
 	text-align: left;
 	-moz-user-select: none;
@@ -137,3 +137,10 @@ h1
 .select-css option {
     font-weight:normal;
 	}
+
+#auto-rotate{
+	position: absolute;
+	float: right;
+	right: 0px;
+	bottom: 0px;
+}
