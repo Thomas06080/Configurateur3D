@@ -15,7 +15,7 @@
 
     <div id="info">
 
-        <div class="inter" style="width : 450px;">
+        <div id="inter" class="inter" style="width : 450px;">
 
             <span>Choisir un Produit:
                 <select class="select-css" id="body-models">
@@ -83,11 +83,14 @@
         scnCamera.position.set(30, 5.8, 0);
 
 
-        //var urls = [ 'posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg', 'negz.jpg' ];
-        //var loader = new THREE.CubeTextureLoader().setPath( 'textures/cube/white/' );
+        // var urls = [ 'posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg', 'negz.jpg' ];
+        // var loader = new THREE.CubeTextureLoader().setPath( 'textures/cube/white/' );
 
-        var urls = ['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'];
-        var loader = new THREE.CubeTextureLoader().setPath('textures/cube/show1/');
+        // var urls = ['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png'];
+        // var loader = new THREE.CubeTextureLoader().setPath('textures/cube/show1/');
+
+        var urls = ['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'];
+        var loader = new THREE.CubeTextureLoader().setPath('textures/cube/studio/');
 
 
         loader.load(urls, function (texture) {
@@ -97,7 +100,6 @@
 
             var helper = new THREE.CameraHelper(scnCamera);
             scene.add(helper);
-
 
             ////ORBIT CONTROLS////
             var controls = new OrbitControls(scnCamera, renderer.domElement);
@@ -129,9 +131,10 @@
 
             ////SOL////
             meshFloor = new THREE.Mesh(
-                new THREE.CircleGeometry(2.5, 64),
-                new THREE.MeshStandardMaterial({color: 16777215, wireframe: false, roughness: 1.0,})
-            );
+                new THREE.CircleGeometry(4, 30),
+                new THREE.MeshStandardMaterial({
+                    map: new THREE.TextureLoader().load("textures/table.jpg"),
+                    roughness: 1.0}));
             meshFloor.rotation.x -= Math.PI / 2;
             meshFloor.receiveShadow = true;
             scene.add(meshFloor);
@@ -146,90 +149,74 @@
             ////AMBIENT LIGHT////
             var ambient = new THREE.AmbientLight(0xffffff, 1.5);
             scene.add(ambient);
-            ////AMBIENT LIGHT FIN////
-
-            //LIGHT 1 LUMIERE ROUGE//
-
+            // ////AMBIENT LIGHT FIN////
+            //
+            // //LIGHT 1 LUMIERE ROUGE//
+            //
 
             var SpotLight = new THREE.SpotLight(0xffffff, 3);
-            SpotLight.position.set(5, 2, 2);
+            SpotLight.position.set(3, 2, 2);
             SpotLight.target.position.set(0, 0, 0);
             SpotLight.castShadow = true;
             SpotLight.shadowCameraVisible = false;
-            SpotLight.decay = 1;
+            SpotLight.decay = 1.5;
             SpotLight.penumbra = 1;
 
             scene.add(SpotLight);
 
-            //var spotLightHelper = new THREE.SpotLightHelper( SpotLight, 0xFF0000 ) ;
-            //scene.add( spotLightHelper );
+            // var spotLightHelper = new THREE.SpotLightHelper( SpotLight, 0xFF0000 ) ;
+            // scene.add( spotLightHelper );
 
-            //LIGHT 2 LUMIERE VERTE//
-
+            // // //LIGHT 2 LUMIERE VERTE//
+            //
 
             var SpotLight = new THREE.SpotLight(0xffffff, 5);
-            SpotLight.position.set(5, 2, 10);
+            SpotLight.position.set(3, 2, 7);
             SpotLight.target.position.set(0, 0, 0);
             SpotLight.castShadow = true;
-            SpotLight.decay = 1;
+            SpotLight.decay = 1.5;
             SpotLight.penumbra = 1;
 
             scene.add(SpotLight);
 
-            //var spotLightHelper = new THREE.SpotLightHelper( SpotLight, 0x64FF00 ) ;
-            //scene.add( spotLightHelper );
+            // var spotLightHelper = new THREE.SpotLightHelper( SpotLight, 0x64FF00 ) ;
+            // scene.add( spotLightHelper );
 
 
-            //LIGHT 3 LUMIERE BLEU//
+            // //LIGHT 3 LUMIERE BLEU//
 
 
             var SpotLight = new THREE.SpotLight(0xffffff, 2);
-            SpotLight.position.set(-5, 1, 1);
+            SpotLight.position.set(-3, 1, 1);
             SpotLight.target.position.set(0, 0, 0);
             SpotLight.castShadow = true;
-            SpotLight.decay = 1;
+            SpotLight.decay = 1.5;
             SpotLight.penumbra = 1;
 
             scene.add(SpotLight);
 
-            //var spotLightHelper = new THREE.SpotLightHelper( SpotLight, 0x00C9FF ) ;
-            //scene.add( spotLightHelper );
+            // var spotLightHelper = new THREE.SpotLightHelper( SpotLight, 0x00C9FF ) ;
+            // scene.add( spotLightHelper );
 
 
             //LIGHT 4 LUMIERE JAUNE//
 
 
-            var SpotLight = new THREE.SpotLight(0xffffff, 5);
-            SpotLight.position.set(-5, 5, -15);
-            SpotLight.target.position.set(0, 0, 0);
-            SpotLight.castShadow = true;
-            SpotLight.decay = 1;
-            SpotLight.penumbra = 1;
-
-            scene.add(SpotLight);
-
-            //var spotLightHelper = new THREE.SpotLightHelper( SpotLight, 0xFFFF00 ) ;
-            //scene.add( spotLightHelper );
+            // var SpotLight = new THREE.SpotLight(0xffffff, 5);
+            // SpotLight.position.set(-5, 5, -15);
+            // SpotLight.target.position.set(0, 0, 0);
+            // SpotLight.castShadow = true;
+            // SpotLight.decay = 1;
+            // SpotLight.penumbra = 1;
+            //
+            // scene.add(SpotLight);
+            //
+            // var spotLightHelper = new THREE.SpotLightHelper( SpotLight, 0xFFFF00 ) ;
+            // scene.add( spotLightHelper );
 
 
             ////////LIGHT FIN////
 
-
-            //////LIGHT AUTRE REGLAGE////
-
-
-            //var ambientLight = new THREE.AmbientLight (0xffffff, 0.2);
-            //scene.add (ambientLight);
-
-            //var light = new THREE.PointLight (0xffffff, 0.8, 18);
-            //light.position.set (-3,6,-3);
-            //light.castShadow = true;
-            //light.shadow.camera.near = 0.1;
-            //light.shadow.camera.far = 25;
-            //scene.add(light);
-
-
-            /////////////////////////////
 
             var pmremGenerator = new PMREMGenerator(texture);
             pmremGenerator.update(renderer);
@@ -515,7 +502,7 @@
         }
             if(bodyModelSelect.value === "Carte de visite"){
                 bodyMatSelect.innerHTML=""
-                grilleSelect.style.display = "none"
+                affichageGrille()
                 materialsLib.Carte.forEach(function (material) {
 
                     addOption(material.name, bodyMatSelect);
@@ -525,7 +512,6 @@
                 bodyMatSelect.selectedIndex = 0;
             }else if(bodyModelSelect.value === "E-Liquide"){
                 bodyMatSelect.innerHTML=""
-                grilleSelect.style.display = ""
                 affichageGrille()
                 materialsLib.main.forEach(function (material) {
 
@@ -545,9 +531,7 @@
             modelParts.body.forEach(part => part.material = bodyMat);
 
         }else if (bodyModelSelect.value === "Carte de visite") {
-
             var bodyMatt = materialsLib.Carte[bodyMatSelect.selectedIndex];
-            console.log(modelParts.body)
             modelParts.body.forEach(part => part.material = bodyMatt);
         }
     }
@@ -563,10 +547,24 @@
             6:'miniatures/super-beignet.jpg',
             7:'miniatures/zephyr.jpg'
         }
+        let srcCarte={
+            0:'miniatures/FinitionDoreeSurFondNoir.png',
+            1:'miniatures/FinitionDoreeSurFondBlanc.png',
+            2:'miniatures/FinitionDoreeArgentSurFondNoir.png',
+            3:'miniatures/VernisSelectif.png',
+            4:'miniatures/VernisSelectif3D.png',
+            5:'miniatures/Gauffrage.png'
+        }
         grilleSelect.style.display="";
         grilleSelect.innerHTML=null;
-        for (let i = 0; i < 8; i++) {
-            grilleSelect.innerHTML+= '<a href="usdz/bottle-'+i+1+'.usdz">'+'<img class="miniature" src="'+src[i]+'"></a>'
+        if(bodyModelSelect.value === "E-Liquide"){
+            for (let i = 0; i < 8; i++) {
+                grilleSelect.innerHTML+= '<a href="usdz/bottle-'+i+1+'.usdz">'+'<img class="miniature" src="'+src[i]+'"></a>'
+            }
+        }else if (bodyModelSelect.value === "Carte de visite"){
+            for (let i = 0; i < 6; i++) {
+                grilleSelect.innerHTML+= '<a href="#">'+'<img class="miniature" src="'+srcCarte[i]+'"></a>'
+            }
         }
     }
 
