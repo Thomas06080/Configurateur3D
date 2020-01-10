@@ -1,7 +1,7 @@
 body {
 	margin: 0;
 	background-color: #000;
-	color: #fff;
+	color: black;
 	font-family: Helvetica;
 	font-size: 13px;
 	line-height: 24px;
@@ -56,10 +56,9 @@ canvas {
 
 .inter
 {
-
-	padding:40px;
-	float:right;
-	
+	position: absolute;
+	right: 2rem;
+	top: 3rem;
 }
 
 
@@ -86,12 +85,9 @@ h1
 
 .miniature
 {
-
-	width:80px;
-	border-radius: 200px;
+	width:60px;
+	border-radius: 20px;
 	padding:10px 10px 10px 10px;
-	  
-
 }
 
 
@@ -143,4 +139,49 @@ h1
 	float: right;
 	right: 0px;
 	bottom: 0px;
+}
+
+#info-txt{
+	width: 19rem;
+	height: auto;
+	color: black;
+	position: absolute;
+	border : 0.07rem solid;
+	border-radius : 10px;
+	text-align : center;
+	background-color : rgba(0, 0, 290, 0.2);
+	font-family : Helvetica;
+	font-size : 15px;
+	text-decoration : none;
+}
+
+#button-usdz{
+	position: absolute;
+	border-radius: 5px;
+	right: 40px;
+}
+
+#grille{
+	position: absolute;
+	bottom: 3rem;
+	left: 4rem;
+}
+
+#menu-logo{
+	position: absolute;
+	right: 2rem;
+}
+
+#checkbox{
+	bottom: 1rem;
+	position: absolute;
+	text-decoration: none;
+	color: black;
+	font-family : Helvetica;
+	font-size : 20px;
+}
+
+#checkboxInput{
+	width: 20px;
+	height: 20px;
 }
