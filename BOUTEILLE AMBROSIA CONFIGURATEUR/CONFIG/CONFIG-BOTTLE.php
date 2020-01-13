@@ -114,7 +114,7 @@
             controls.enablePan = false;
             controls.enableZoom = true;
             controls.minDistance = 1;
-            controls.maxDistance = 6;
+            controls.maxDistance = 3.5;
             controls.enableDamping = true;
             controls.dampingFactor = 0.2;
             controls.minPolarAngle = 0.1; //Uper
@@ -134,7 +134,7 @@
 
             ////SOL////
             meshFloor = new THREE.Mesh(
-                new THREE.CircleGeometry(3, 30),
+                new THREE.CircleGeometry(1, 50),
                 new THREE.MeshStandardMaterial({
                     map: new THREE.TextureLoader().load("textures/sol.jpeg"),
                     roughness: 1.0}));
@@ -649,7 +649,6 @@
     function checkboxAfficher() {
         if (checkboxAffichage.checked){
             grilleSelect.style.display = null;
-            rotate.style.display =null;
             info.style.display = null;
             if (infoTxt.style.display !== "none"){
                 infoTxt.style.display = null;
@@ -658,7 +657,6 @@
             menuLogo.style.display = null
         }else {
             grilleSelect.style.display = "none";
-            rotate.style.display ="none";
             info.style.display = "none";
             infoTxt.style.display = "none";
             inter.style.display = "none";
