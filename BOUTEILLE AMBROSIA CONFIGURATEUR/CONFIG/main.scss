@@ -132,14 +132,8 @@ h1
 }
 .select-css option {
     font-weight:normal;
-	}
-
-#auto-rotate{
-	position: absolute;
-	float: right;
-	right: 0px;
-	bottom: 0px;
 }
+
 
 #info-txt{
 	width: 19rem;
@@ -149,16 +143,18 @@ h1
 	border : 0.07rem solid;
 	border-radius : 10px;
 	text-align : center;
-	background-color : rgba(0, 0, 290, 0.2);
 	font-family : Helvetica;
 	font-size : 15px;
 	text-decoration : none;
+	background: -moz-linear-gradient(top,  rgba(30,87,153,0.54) 1%, rgba(125,185,232,0) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  rgba(30,87,153,0.54) 1%,rgba(125,185,232,0) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(30,87,153,0.54) 1%,rgba(125,185,232,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8a1e5799', endColorstr='#007db9e8',GradientType=0 ); /* IE6-9 */
+
 }
 
 #button-usdz{
-	position: absolute;
 	border-radius: 5px;
-	right: 40px;
 }
 
 #grille{
@@ -184,4 +180,97 @@ h1
 #checkboxInput{
 	width: 20px;
 	height: 20px;
+}
+
+#sidebar{
+	width: 260px;
+	top: 0px;
+	right: 0px;
+	height: 99.5%;
+	position: absolute;
+	border: solid 1px;
+	background-color: whitesmoke;
+	display: block;
+}
+
+#header-ui{
+	border: solid 1px grey;
+	cursor: pointer;
+	background-color: lightgrey;
+	padding-left: 10px;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
+}
+
+#header-ui1{
+	border: solid 1px grey;
+	cursor: pointer;
+	background-color: lightgrey;
+	padding-left: 10px;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
+}
+
+#header-ui2{
+	border: solid 1px grey;
+	cursor: pointer;
+	background-color: lightgrey;
+	padding-left: 10px;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
+}
+
+#header-ui3{
+	border: solid 1px grey;
+	cursor: pointer;
+	background-color: lightgrey;
+	padding-left: 10px;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
+}
+
+#header-ui4{
+	border: solid 1px grey;
+	cursor: pointer;
+	background-color: lightgrey;
+	padding-left: 10px;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
+}
+
+#content-ui{
+	cursor: pointer;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
+}
+
+#content-ui1{
+	cursor: pointer;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
+}
+
+#content-ui2{
+	cursor: pointer;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
+}
+
+#content-ui3{
+	cursor: pointer;
+	padding-left: 8px;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
+}
+
+#content-ui4{
+	cursor: pointer;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
+}
+
+#ul-list{
+	list-style: none;
+	text-decoration: none;
+	user-select: none; /* Propriété standard */
 }

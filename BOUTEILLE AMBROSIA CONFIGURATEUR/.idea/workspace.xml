@@ -25,10 +25,16 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AGARTA-CONFIGURATOR/AGARTA-CONFIGURATOR" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../TestSideBar" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\wamp64\www\config3D\BOUTEILLE AMBROSIA CONFIGURATEUR\CONFIG" />
+    </key>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -60,7 +66,10 @@
       <workItem from="1578470693421" duration="26042000" />
       <workItem from="1578561899082" duration="620000" />
       <workItem from="1578567034906" duration="23872000" />
-      <workItem from="1578655345791" duration="11357000" />
+      <workItem from="1578655345791" duration="11999000" />
+      <workItem from="1578742485054" duration="642000" />
+      <workItem from="1579075507556" duration="17152000" />
+      <workItem from="1579162662200" duration="23322000" />
     </task>
     <servers />
   </component>
@@ -68,19 +77,23 @@
     <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1578653994348">
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1579165837131">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1578653994348" />
-    <state x="470" y="242" key="com.intellij.ide.util.TipDialog" timestamp="1578655345932">
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1579165837131" />
+    <state x="184" y="7" key="SettingsEditor" timestamp="1579101033972">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="470" y="242" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1578655345932" />
+    <state x="184" y="7" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1579101033972" />
+    <state x="470" y="242" key="com.intellij.ide.util.TipDialog" timestamp="1579162662091">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="470" y="242" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1579162662091" />
     <state x="661" y="345" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1578419588456" />
-    <state x="339" y="162" key="run.anything.popup" timestamp="1578668000621">
+    <state x="339" y="162" key="run.anything.popup" timestamp="1579180102753">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1578668000621" />
+    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1579180102753" />
     <state x="346" y="49" width="672" height="678" key="search.everywhere.popup" timestamp="1578650431634">
       <screen x="0" y="0" width="1366" height="728" />
     </state>

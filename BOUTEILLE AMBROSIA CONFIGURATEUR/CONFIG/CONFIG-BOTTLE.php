@@ -4,7 +4,8 @@
     <title>Configurateur</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="main.css">
+    <link type="text/css" rel="stylesheet" href="main.scss">
+    <link rel="icon" type="image/jpg" href="textures/agarta.jpg" />
 </head>
 
 <body>
@@ -15,31 +16,81 @@
         <a><img id="menu-logo" src="miniatures/hamburger.png"></a>
         <a><img id="info-image" src="miniatures/info.png"></a>
         <a style="display: none" id="info-txt"></a>
+
         <div id="inter" class="inter" style="width :22rem;">
 
-            <span>Choisir un Produit:
-                <select class="select-css" id="body-models">
-                    <option id="e-liquide">E-Liquide</option>
-                    <option id="carte">Carte de visite</option>
-                </select>
-            </span>
-
             <br>
-
-            <span>Choisissez parmis les nombreux choix de design: <select class="select-css" id="body-mat"></select></span>
-
-            <br>
-
-            <button id="button-usdz">Fichiers Usdz</button>
 
         </div>
             <div class="grille" id="grille"></div>
 
-        <a id="auto-rotate"><img id="img360" src="miniatures/rotate.png"></a>
+<!--        <a id="auto-rotate"><img id="img360" src="miniatures/rotate.png"></a>-->
     </div>
 </div>
 
 <div id="container"></div>
+
+<div id="sidebar">
+    <div id="content-sidebar">
+        <div id="new-ui">
+            <div id="header-ui">
+                <span>Choisir un produit : </span>
+                <i> ></i>
+            </div>
+            <div id="content-ui">
+                <ul id="ul-list">
+                    <li id="eliquide">E-Liquide</li>
+                    <li id="carte1">Carte de Visite</li>
+                </ul>
+            </div>
+        </div>
+        <div id="new-ui">
+            <div id="header-ui1">
+                <span>Choisir un design : </span>
+                <i> ></i>
+            </div>
+            <div id="content-ui1">
+                <span><select class="select-css" id="body-mat"></select></span>
+            </div>
+        </div>
+        <div id="new-ui">
+            <div id="header-ui2">
+                <span>Background : </span>
+                <i> ></i>
+            </div>
+            <div id="content-ui2">
+                <ul id="ul-list">
+                    <li id="fondGris">Fond gris</li>
+                    <li id="fondNature">Fond Nature</li>
+                </ul>
+            </div>
+        </div>
+        <div id="new-ui">
+            <div id="header-ui3">
+                <span>Sol : </span>
+                <i> ></i>
+            </div>
+            <div id="content-ui3">
+                <span>Texture : <input type="file"></span>
+                <br>
+                <span>Palette de couleurs: <br><input type="color"></span>
+
+            </div>
+        </div>
+        <div id="new-ui">
+            <div id="header-ui4">
+                <span>Options : </span>
+                <i> ></i>
+            </div>
+            <div id="content-ui4">
+                <ul id="ul-list">
+                    <li id="auto-rotate">Rotation 360°</li>
+                    <li><button id="button-usdz">Fichiers Usdz</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="module">
 
@@ -53,7 +104,7 @@
     import {EquirectangularToCubeGenerator} from './jsm/loaders/EquirectangularToCubeGenerator.js';
     import {RGBELoader} from './jsm/loaders/RGBELoader.js';
     ////INITIALISATION DES VARIABLES////
-    let scnCamera, scene, meshFloor, renderer, objModel, materialsLib, envMap, controls;
+    let scnCamera, scene, mesh, meshFloor, renderer, objModel, materialsLib, envMap, controls;
 
     let bodyMatSelect = document.getElementById('body-mat');
     let bodyModelSelect = document.getElementById('body-models');
@@ -65,12 +116,30 @@
     let menuLogo = document.getElementById('menu-logo');
     let inter = document.getElementById('inter');
     let checkboxAffichage = document.querySelector("input[name=checkbox]");
+    let sidebare = document.getElementById('sidebar');
+    let headerUi = document.getElementById('header-ui');
+    let headerUi1 = document.getElementById('header-ui1');
+    let headerUi2 = document.getElementById('header-ui2');
+    let headerUi3 = document.getElementById('header-ui3');
+    let headerUi4 = document.getElementById('header-ui4');
+    let contentUi = document.getElementById('content-ui');
+    let contentUi1 = document.getElementById('content-ui1');
+    let contentUi2 = document.getElementById('content-ui2');
+    let contentUi3 = document.getElementById('content-ui3');
+    let contentUi4 = document.getElementById('content-ui4');
+    let eLiquide = document.getElementById('eliquide');
+    let carte = document.getElementById('carte1');
+    let eliquide = document.getElementById('eliquide');
+    let fondGris = document.getElementById('fondGris');
+    let fondNature = document.getElementById('fondNature');
+
 
     let liens;
-    let n =0;
-    let i = 0;
-    let t=0;
-    let x=0;
+
+    let n,i,t,x,a,b,c,d,e = 0;
+    let fond = 0;
+
+    let objetActuel = "E-Liquide";
 
     let modelParts = {
         body: [],
@@ -80,14 +149,27 @@
     ////INITIALISATION DES VARIABLES FIN////
 
     ////DEBUT addEventListener() List////
-    bodyModelSelect.addEventListener('change', updateModel);
+    carte.addEventListener('click', updateModelCarte);
+    eliquide.addEventListener('click',updateModelELiquide );
     bodyMatSelect.addEventListener('change', updateMaterials);
-    bodyModelSelect.addEventListener('change', initMaterialSelectionMenus);
     rotate.addEventListener("click",OnOffRotation);
-    info.addEventListener('click',OnOffInfo)
-    buttonUsdz.addEventListener('click',OnOffUsdz)
-    menuLogo.addEventListener('click',OnOffMenu)
-    checkboxAffichage.addEventListener('change',checkboxAfficher)
+    info.addEventListener('click',OnOffInfo);
+    buttonUsdz.addEventListener('click',OnOffUsdz);
+    menuLogo.addEventListener('click',OnOffMenu);
+    checkboxAffichage.addEventListener('change',checkboxAfficher);
+    headerUi.addEventListener('click',OnOffHeaderUi);
+    headerUi1.addEventListener('click',OnOffHeaderUi1);
+    headerUi2.addEventListener('click',OnOffHeaderUi2);
+    headerUi3.addEventListener('click',OnOffHeaderUi3);
+    headerUi4.addEventListener('click',OnOffHeaderUi4);
+    fondGris.addEventListener("click", function () {
+        fond=0;
+        changerFond()
+    })
+    fondNature.addEventListener('click',function () {
+        fond =1;
+        changerFond()
+    })
     ////FIN addEventListener() List////
 
     ////INITIALISATION////
@@ -97,7 +179,7 @@
 
         scene = new THREE.Scene();
 
-        scnCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.001, 100);
+        scnCamera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.001, 100);
         scnCamera.position.set(30, 5, 0);
 
         let urls = ['px.jpg', 'nx.jpg', 'py.jpg', 'ny.jpg', 'pz.jpg', 'nz.jpg'];
@@ -114,29 +196,30 @@
             controls.enablePan = false;
             controls.enableZoom = true;
             controls.minDistance = 1;
-            controls.maxDistance = 6;
+            controls.maxDistance = 4;
             controls.enableDamping = true;
             controls.dampingFactor = 0.2;
             controls.minPolarAngle = 0.1; //Uper
             controls.maxPolarAngle = 1.8; //Lowers
-            controls.target.set(0, 0.6, 0);
+            controls.target.set(0, 0.8, 0);
             controls.autoRotate = true;
             controls.autoRotateSpeed = 0.05;
             controls.update();
 
             ////ORBIT CONTROLS FIN////
 
-            ////FOND IMAGE DE LA SCENE////
+            //SKYBOX////
             scene = new THREE.Scene();
-            scene.background = new THREE.TextureLoader().load("textures/gris.jpg"); // (Ciel)
-            scene.backgroundSphere = true;
-            ////FOND IMAGE DE LA SCENE FIN////
+                scene.background = new THREE.TextureLoader().load("textures/gris.jpg"); // (Ciel)
+                scene.backgroundSphere = true;
+
+            ////SKYBOX FIN////
 
             ////SOL////
             meshFloor = new THREE.Mesh(
-                new THREE.CircleGeometry(3, 30),
+                new THREE.CircleGeometry(1, 50),
                 new THREE.MeshStandardMaterial({
-                    map: new THREE.TextureLoader().load("textures/sol.jpeg"),
+                    map: new THREE.TextureLoader().load("textures/marbre.jpg"),
                     roughness: 1.0}));
             meshFloor.rotation.x -= Math.PI / 2;
             meshFloor.receiveShadow = true;
@@ -254,6 +337,44 @@
     }
     ////INITIALISATION FIN////
 
+    ////CHANGER BACKGROUND////
+    function changerFond(){
+        if (fond === 0){
+            scene.remove(mesh)
+            scene.background = new THREE.TextureLoader().load("textures/gris.jpg"); // (Ciel)
+            scene.backgroundSphere = true;
+        }else if (fond === 1){
+            let path = "textures/ocean/";
+            let format = '.jpg';
+            let urls = [
+                path + 'right' + format,
+                path + 'left' + format,
+                path + 'top' + format,
+                path + 'bottom' + format,
+                path + 'back' + format,
+                path + 'front' + format
+            ];
+
+            let reflectionCube = THREE.ImageUtils.loadTextureCube(urls);
+            reflectionCube.format = THREE.RGBFormat;
+
+            let shader = THREE.ShaderLib[ "cube" ];
+            shader.uniforms[ "tCube" ].value = reflectionCube;
+
+            let material = new THREE.ShaderMaterial( {
+                fragmentShader: shader.fragmentShader,
+                vertexShader: shader.vertexShader,
+                uniforms: shader.uniforms,
+                depthWrite: false,
+                side: THREE.BackSide
+            });
+
+            mesh = new THREE.Mesh(new THREE.BoxGeometry(100, 100, 100), material);
+            scene.add(mesh);
+        }
+    }
+    ////CHANGER BACKGROUND FIN////
+
     ////INITIALISATION MODEL////
     function initModel() {
         let dracoLoader = new DRACOLoader();
@@ -282,26 +403,24 @@
     }
     ////INITIALISATION MODEL FIN////
 
-    ////UPDATE MODEL////
-    function updateModel(){
-        scene.remove(objModel)
+    ////UPDATE MODEL LIQUIDE////
+    function updateModelELiquide(){
+        objetActuel = "E-Liquide";
+        scene.remove(objModel);
         let dracoLoader = new DRACOLoader();
         dracoLoader.setDecoderPath('js/libs/draco/gltf/');
 
         let loader = new GLTFLoader();
         loader.setDRACOLoader(dracoLoader);
-        //liens des objets 3D
-        if(bodyModelSelect.value === "Carte de visite"){
-            liens = "models/gltf/carte/carte.gltf"
-        }else if(bodyModelSelect.value === "E-Liquide"){
+
             liens = "models/gltf/ambrosia/bouteille-ambrosia.gltf"
-        }
+
 
         loader.load(liens, function (gltf) {
             objModel = gltf.scene.children[0];
 
             objModel.traverse(function (child) {
-                child.type="Mesh"
+                child.type="Mesh";
                 if (child.isMesh) {
                     child.material.envMap = envMap;
                 }
@@ -313,11 +432,47 @@
             if (objModel.getObjectByName('body')) {
                 modelParts.body.push(objModel.getObjectByName('body'));
             }
+            initMaterialSelectionMenus()
             updateMaterials();
+
         });
     }
-    ////UPDATE MODEL FIN////
+    ////UPDATE MODEL E-LIQUIDE FIN////
 
+    ////UPDATE MODEL CARTE////
+    function updateModelCarte(){
+        objetActuel = "Carte de visite";
+        scene.remove(objModel);
+        let dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath('js/libs/draco/gltf/');
+
+        let loader = new GLTFLoader();
+        loader.setDRACOLoader(dracoLoader);
+
+            liens = "models/gltf/carte/carte.gltf"
+
+        loader.load(liens, function (gltf) {
+            objModel = gltf.scene.children[0];
+
+            objModel.traverse(function (child) {
+                child.type="Mesh";
+                if (child.isMesh) {
+                    child.material.envMap = envMap;
+                }
+            });
+
+            scene.add(objModel);
+
+            // car parts for material selection
+            if (objModel.getObjectByName('body')) {
+                modelParts.body.push(objModel.getObjectByName('body'));
+            }
+            initMaterialSelectionMenus()
+            updateMaterials();
+
+        });
+    }
+    ////UPDATE MODEL CARTE FIN////
 
     ////INITIALISATION MATERIALS////
     function initMaterials() {
@@ -465,37 +620,32 @@
             option.value = name;
             menu.add(option);
         }
-
-        if(bodyModelSelect.value === "Carte de visite"){
-            bodyMatSelect.innerHTML=""
-            affichageGrille()
-
-            materialsLib.Carte.forEach(function (material) {
-                addOption(material.name, bodyMatSelect);
-            });
-
-            bodyMatSelect.selectedIndex = 0;
-
-        }else if(bodyModelSelect.value === "E-Liquide"){
-            bodyMatSelect.innerHTML=""
-            affichageGrille()
+        if (objetActuel === "E-Liquide"){
+            bodyMatSelect.innerHTML="";
+            affichageGrille();
 
             materialsLib.main.forEach(function (material) {
                 addOption(material.name, bodyMatSelect);
             });
-            bodyMatSelect.selectedIndex = 0;
+        }else if (objetActuel === "Carte de visite"){
+            bodyMatSelect.innerHTML="";
+            affichageGrille();
+
+            materialsLib.Carte.forEach(function (material) {
+                addOption(material.name, bodyMatSelect);
+            });
         }
+            bodyMatSelect.selectedIndex = 0;
     }
     ////INITIALISATION MENU MATERIALS FIN////
 
     ////UPDATE MENU MATERIALS////
     function updateMaterials() {
-        if(bodyModelSelect.value === "E-Liquide") {
+        if(objetActuel === "E-Liquide") {
             let bodyMat = materialsLib.main[bodyMatSelect.selectedIndex];
 
             modelParts.body.forEach(part => part.material = bodyMat);
-
-        }else if (bodyModelSelect.value === "Carte de visite") {
+        }else if (objetActuel === "Carte de visite") {
             let bodyMatt = materialsLib.Carte[bodyMatSelect.selectedIndex];
             modelParts.body.forEach(part => part.material = bodyMatt);
         }
@@ -504,7 +654,7 @@
 
     ////CLICK FILES USDZ////
     function OnOffUsdz(){
-        t +=1
+        t +=1;
         if (t === 1){
         } else {
             t =0
@@ -535,12 +685,12 @@
         };
         grilleSelect.style.display="";
         grilleSelect.innerHTML=null;
-        if (t===1){
-            if(bodyModelSelect.value === "E-Liquide"){
+        if (t===0){
+            if(objetActuel === "E-Liquide"){
                 for (let i = 0; i < 8; i++) {
                     grilleSelect.innerHTML+= '<a href="usdz/bottle-'+(i+1)+'.usdz">'+'<img class="miniature" src="'+src[i]+'"></a>'
                 }
-            }else if (bodyModelSelect.value === "Carte de visite"){
+            }else if (objetActuel === "Carte de visite"){
                 for (let i = 0; i < 6; i++) {
                     grilleSelect.innerHTML+= '<a href="#">'+'<img class="miniature" src="'+srcCarte[i]+'"></a>'
                 }
@@ -553,7 +703,6 @@
 
     ////RESIZE WINDOW////
     function onWindowResize() {
-
         scnCamera.aspect = window.innerWidth / window.innerHeight;
         scnCamera.updateProjectionMatrix();
 
@@ -580,7 +729,7 @@
 
     ////ANIMATION 360////
     function animate() {
-        if (n === 1) {
+        if (n === 0) {
             objModel.rotation.z += 0.01;
             meshFloor.rotation.z -=0.01;
             requestAnimationFrame(animate);
@@ -599,10 +748,10 @@
 
     ////CLICK INFO BUTTON////
     function OnOffInfo(){
-        i +=1;
+        i += 1;
         if (i === 1){
         } else {
-            i =0
+            i = 0;
         }
         infoProduit()
     }
@@ -636,11 +785,14 @@
     ////CLICK MENU FIN////
 
     ////DISPLAY MENU////
+
     function displayMenu() {
-        if (x === 1) {
+        if (x === 0) {
             inter.style.display = "none"
+            sidebare.style.display = "none"
         } else {
-            inter.style.display = ""
+            // inter.style.display = ""
+            sidebare.style.display = ""
         }
     }
     ////DISPLAY MENU FIN////
@@ -649,7 +801,6 @@
     function checkboxAfficher() {
         if (checkboxAffichage.checked){
             grilleSelect.style.display = null;
-            rotate.style.display =null;
             info.style.display = null;
             if (infoTxt.style.display !== "none"){
                 infoTxt.style.display = null;
@@ -658,7 +809,6 @@
             menuLogo.style.display = null
         }else {
             grilleSelect.style.display = "none";
-            rotate.style.display ="none";
             info.style.display = "none";
             infoTxt.style.display = "none";
             inter.style.display = "none";
@@ -666,6 +816,104 @@
         }
     }
     ////CHECKBOX AFFICHAGE FIN////
+
+    ////OnOff HEADER UI////
+    function OnOffHeaderUi(){
+        a +=1;
+        if (a === 1){
+        } else {
+            a =0
+        }
+        displayUi()
+    }
+    ////OnOff HEADER UI FIN////
+
+    function OnOffHeaderUi1(){
+        b +=1;
+        if (b === 1){
+        } else {
+            b =0
+        }
+        displayUi1()
+    }
+
+
+    function OnOffHeaderUi2(){
+        c +=1;
+        if (c === 1){
+        } else {
+            c =0
+        }
+        displayUi2()
+    }
+
+    function OnOffHeaderUi3(){
+        d +=1;
+        if (d === 1){
+        } else {
+            d =0
+        }
+        displayUi3()
+    }
+
+    function OnOffHeaderUi4(){
+        e +=1;
+        if (e === 1){
+        } else {
+            e =0
+        }
+        displayUi4()
+    }
+
+    ////DISPLAY UI////
+    function displayUi(){
+        if (a ===1){
+            contentUi.style.display = "none";
+        }else{
+            contentUi.style.display = "";
+        }
+    }
+    ////DISPLAY UI FIN////
+
+    ////DISPLAY UI 1////
+    function displayUi1(){
+        if (b ===1){
+            contentUi1.style.display = "none";
+        }else{
+            contentUi1.style.display = "";
+        }
+    }
+    ////DISPLAY UI FIN////
+
+    ////DISPLAY UI 2////
+    function displayUi2(){
+        if (c ===1){
+            contentUi2.style.display = "none";
+        }else{
+            contentUi2.style.display = "";
+        }
+    }
+    ////DISPLAY UI FIN////
+
+    ////DISPLAY UI 3////
+    function displayUi3(){
+        if (d ===1){
+            contentUi3.style.display = "none";
+        }else{
+            contentUi3.style.display = "";
+        }
+    }
+    ////DISPLAY UI FIN////
+
+    ////DISPLAY UI 3////
+    function displayUi4(){
+        if (e ===1){
+            contentUi4.style.display = "none";
+        }else{
+            contentUi4.style.display = "";
+        }
+    }
+    ////DISPLAY UI FIN////
 
     init();
 
