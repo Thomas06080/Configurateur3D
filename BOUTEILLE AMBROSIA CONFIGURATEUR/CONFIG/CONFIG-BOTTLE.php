@@ -1,11 +1,39 @@
+<?php
+include_once ('config.php');
+$bdd = getbdd();
+$produits = getAllProduit($bdd);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Configurateur</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="main.scss">
-    <link rel="icon" type="image/jpg" href="textures/agarta.jpg" />
+    <link type="text/css" rel="stylesheet" href="main.css">
+    <link rel="icon" type="image/jpg" href="textures/agarta.jpg"/>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>
+    <script>
+        function openSlideMenu(){
+            document.getElementById('menu').style.width = '250px';
+            document.getElementById('content').style.marginLeft = '250px';
+            document.getElementById('hamburger-img').style.display = "none"
+        }
+        function closeSlideMenu(){
+            for (let j = 0; j < 5 ; j++) {
+                if (j===0){
+                    j=""
+                }
+                document.getElementById('content-ui'+j).style.transition= '';
+                document.getElementById('content-ui'+j).style.overflow= '';
+                document.getElementById('content-ui'+j).style.maxHeight = '';
+            }
+            document.getElementById('menu').style.width = '0';
+            document.getElementById('content').style.marginLeft = '0';
+            document.getElementById('hamburger-img').style.display = ""
+        }
+    </script>
+    <script src="ccapture/build/CCapture.all.min.js"></script>
 </head>
 
 <body>
@@ -13,84 +41,118 @@
 
     <div id="info">
         <a id="checkbox"><input id="checkboxInput" type="checkbox" name=checkbox checked> Affichage</a>
-        <a><img id="menu-logo" src="miniatures/hamburger.png"></a>
         <a><img id="info-image" src="miniatures/info.png"></a>
         <a style="display: none" id="info-txt"></a>
 
-        <div id="inter" class="inter" style="width :22rem;">
+        <div class="grille" id="grille"></div>
 
-            <br>
-
-        </div>
-            <div class="grille" id="grille"></div>
-
-<!--        <a id="auto-rotate"><img id="img360" src="miniatures/rotate.png"></a>-->
     </div>
 </div>
 
-<div id="container"></div>
+<div id="content">
 
-<div id="sidebar">
-    <div id="content-sidebar">
-        <div id="new-ui">
-            <div id="header-ui">
-                <span>Choisir un produit : </span>
-                <i> ></i>
-            </div>
-            <div id="content-ui">
-                <ul id="ul-list">
-                    <li id="eliquide">E-Liquide</li>
-                    <li id="carte1">Carte de Visite</li>
-                </ul>
-            </div>
-        </div>
-        <div id="new-ui">
-            <div id="header-ui1">
-                <span>Choisir un design : </span>
-                <i> ></i>
-            </div>
-            <div id="content-ui1">
-                <span><select class="select-css" id="body-mat"></select></span>
-            </div>
-        </div>
-        <div id="new-ui">
-            <div id="header-ui2">
-                <span>Background : </span>
-                <i> ></i>
-            </div>
-            <div id="content-ui2">
-                <ul id="ul-list">
-                    <li id="fondGris">Fond gris</li>
-                    <li id="fondNature">Fond Nature</li>
-                </ul>
-            </div>
-        </div>
-        <div id="new-ui">
-            <div id="header-ui3">
-                <span>Sol : </span>
-                <i> ></i>
-            </div>
-            <div id="content-ui3">
-                <span>Texture : <input type="file"></span>
-                <br>
-                <span>Palette de couleurs: <br><input type="color"></span>
+    <span class="slide">
+      <a href="#" id="hamburger-img" onclick="openSlideMenu()">
+        <i class="fas fa-bars"></i>
+      </a>
+    </span>
 
-            </div>
-        </div>
-        <div id="new-ui">
-            <div id="header-ui4">
-                <span>Options : </span>
-                <i> ></i>
-            </div>
-            <div id="content-ui4">
-                <ul id="ul-list">
-                    <li id="auto-rotate">Rotation 360°</li>
-                    <li><button id="button-usdz">Fichiers Usdz</button></li>
-                </ul>
+    <div id="menu" class="nav">
+        <a href="#" class="close" onclick="closeSlideMenu()">
+            <i class="fas fa-times"></i>
+        </a>
+
+        <div id="sidebar">
+            <div id="content-sidebar">
+                <div id="new-ui">
+                    <div id="header-ui">
+                        <span>Choisir un produit : </span>
+                    </div>
+                    <div id="content-ui">
+                        <ul id="ul-list">
+                            <?php
+                            $a = -1;
+                            while ($produit = $produits->fetch_assoc()) {
+                                $a+=1;
+                                ?>
+                                <li id="<?= 'model'.$a ?>"><?= $produit['nom']?></li>
+                                <?php
+                            };
+                            ?>
+                        </ul>
+                    </div>
+                </div>
+                <div id="new-ui">
+                    <div id="header-ui1">
+                        <span>Choisir un design : </span>
+                    </div>
+                    <div id="content-ui1">
+                        <span><select class="select-css" id="body-mat"></select></span>
+                        <br>
+                        <span>Voici la liste des disigns disponibles pour le moment</span>
+                    </div>
+                </div>
+                <div id="new-ui">
+                    <div id="header-ui2">
+                        <span>Background : </span>
+                    </div>
+                    <div id="content-ui2">
+                        <ul id="ul-list">
+                            <li id="fondGris">Fond gris</li>
+                            <li id="fondNature">Fond Nature</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="new-ui">
+                    <div id="header-ui3">
+                        <span>Sol : </span>
+                    </div>
+                    <div id="content-ui3">
+                        <span><img id="img-rgb" src="textures/sol.jpeg" width="25px" height="15px">Texture : <input id="input-parcourir" type="file"></span>
+                        <br>
+                        <span><img id="img-rgb" src="miniatures/rgb.jpg" width="25px" height="15px">Palette de couleurs: <br><input id="input-color" type="color"></span>
+                        <br>
+                        <span>Activer : <input id="checkbox-sol" type="checkbox" checked></span>
+                        <br>
+                    </div>
+                </div>
+                <div id="new-ui">
+                    <div id="header-ui4">
+                        <span>Options : </span>
+                    </div>
+                    <div id="content-ui4">
+                        <ul id="ul-list">
+                            <li id="auto-rotate">
+                                <img src="miniatures/rotate.png" height="25px">Rotation 360°
+                            </li>
+                            <li>
+                                <a href="addTexture.php"> <input id="button-usdz" type="button" value="Ajouter une texture"> </a>
+                            </li>
+                            <li>
+                                <button id="button-usdz">Fichiers Usdz</button>
+                            </li>
+                            <li>
+                                <button id="reinitialiser">Réinitialiser</button>
+                            </li>
+                            <li>
+                                <button id="screenshot">ScreenShot</button>
+                            </li>
+                            <div class="buttons">
+                                <button id="start">Start recording to WebM</button>
+                                <button id="stop">Stop (or wait 4 seconds)</button>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+<div id="container">
+
+</div>
+
 
 <script type="module">
 
@@ -106,6 +168,17 @@
     ////INITIALISATION DES VARIABLES////
     let scnCamera, scene, mesh, meshFloor, renderer, objModel, materialsLib, envMap, controls;
 
+    const recorder = new CCapture({
+        verbose: false,
+        display: true,
+        framerate: 60,
+        quality: 100,
+        format: 'webm',
+        timeLimit: 23,
+        frameLimit: 0,
+        autoSaveTime: 0
+    });
+
     let bodyMatSelect = document.getElementById('body-mat');
     let bodyModelSelect = document.getElementById('body-models');
     let grilleSelect = document.getElementById('grille');
@@ -113,7 +186,6 @@
     let info = document.getElementById('info-image');
     let infoTxt = document.getElementById('info-txt');
     let buttonUsdz = document.getElementById('button-usdz');
-    let menuLogo = document.getElementById('menu-logo');
     let inter = document.getElementById('inter');
     let checkboxAffichage = document.querySelector("input[name=checkbox]");
     let sidebare = document.getElementById('sidebar');
@@ -128,16 +200,22 @@
     let contentUi3 = document.getElementById('content-ui3');
     let contentUi4 = document.getElementById('content-ui4');
     let eLiquide = document.getElementById('eliquide');
-    let carte = document.getElementById('carte1');
-    let eliquide = document.getElementById('eliquide');
+    let model = document.getElementById('model0');
+    let model1 = document.getElementById('model1');
     let fondGris = document.getElementById('fondGris');
     let fondNature = document.getElementById('fondNature');
+    let imageParcourir = document.getElementById('input-parcourir');
+    let inputColor = document.getElementById('input-color');
+    let checkboxSol = document.getElementById('checkbox-sol');
+    let reinitialiser = document.getElementById('reinitialiser');
+    let hamburgerImg = document.getElementById('hamburger-img');
+    let screenshot = document.getElementById('screenshot');
 
 
     let liens;
 
-    let n,i,t,x,a,b,c,d,e = 0;
-    let fond = 0;
+    let n, i, t, x, a, b, c, d, e = 0;
+    let fond,sol = 0;
 
     let objetActuel = "E-Liquide";
 
@@ -149,32 +227,44 @@
     ////INITIALISATION DES VARIABLES FIN////
 
     ////DEBUT addEventListener() List////
-    carte.addEventListener('click', updateModelCarte);
-    eliquide.addEventListener('click',updateModelELiquide );
+    model.addEventListener('click',updateModelELiquide);
+    model1.addEventListener('click',updateModelCarte);
     bodyMatSelect.addEventListener('change', updateMaterials);
-    rotate.addEventListener("click",OnOffRotation);
-    info.addEventListener('click',OnOffInfo);
-    buttonUsdz.addEventListener('click',OnOffUsdz);
-    menuLogo.addEventListener('click',OnOffMenu);
-    checkboxAffichage.addEventListener('change',checkboxAfficher);
-    headerUi.addEventListener('click',OnOffHeaderUi);
-    headerUi1.addEventListener('click',OnOffHeaderUi1);
-    headerUi2.addEventListener('click',OnOffHeaderUi2);
-    headerUi3.addEventListener('click',OnOffHeaderUi3);
-    headerUi4.addEventListener('click',OnOffHeaderUi4);
+    rotate.addEventListener("click", OnOffRotation);
+    info.addEventListener('click', OnOffInfo);
+    buttonUsdz.addEventListener('click', OnOffUsdz);
+    checkboxAffichage.addEventListener('change', checkboxAfficher);
+    checkboxSol.addEventListener('change',function () {
+        sol = 0;
+        changerSol()
+    });
+    headerUi.addEventListener('click', OnOffHeaderUi);
+    headerUi1.addEventListener('click', OnOffHeaderUi1);
+    headerUi2.addEventListener('click', OnOffHeaderUi2);
+    headerUi3.addEventListener('click', OnOffHeaderUi3);
+    headerUi4.addEventListener('click', OnOffHeaderUi4);
+    reinitialiser.addEventListener('click',reinitialise);
     fondGris.addEventListener("click", function () {
-        fond=0;
+        fond = 0;
         changerFond()
-    })
-    fondNature.addEventListener('click',function () {
-        fond =1;
+    });
+    fondNature.addEventListener('click', function () {
+        fond = 1;
         changerFond()
-    })
+    });
+    imageParcourir.addEventListener('change',function () {
+        sol = 0;
+        changerSol()
+    });
+    inputColor.addEventListener('change',function () {
+        sol = 1;
+        changerSol()
+    });
+    screenshot.addEventListener('click',takeScreenshot);
     ////FIN addEventListener() List////
 
     ////INITIALISATION////
     function init() {
-
         let container = document.getElementById('container');
 
         scene = new THREE.Scene();
@@ -205,14 +295,12 @@
             controls.autoRotate = true;
             controls.autoRotateSpeed = 0.05;
             controls.update();
-
             ////ORBIT CONTROLS FIN////
 
             //SKYBOX////
             scene = new THREE.Scene();
-                scene.background = new THREE.TextureLoader().load("textures/gris.jpg"); // (Ciel)
-                scene.backgroundSphere = true;
-
+            scene.background = new THREE.TextureLoader().load("textures/gris.jpg"); // (Ciel)
+            scene.backgroundSphere = true;
             ////SKYBOX FIN////
 
             ////SOL////
@@ -220,7 +308,8 @@
                 new THREE.CircleGeometry(1, 50),
                 new THREE.MeshStandardMaterial({
                     map: new THREE.TextureLoader().load("textures/marbre.jpg"),
-                    roughness: 1.0}));
+                    roughness: 1.0
+                }));
             meshFloor.rotation.x -= Math.PI / 2;
             meshFloor.receiveShadow = true;
             scene.add(meshFloor);
@@ -253,7 +342,7 @@
 
             //// //LIGHT 2 LUMIERE VERTE////
             var SpotLight = new THREE.SpotLight(0xffffff, 5);
-            SpotLight.position.set(3, 1,2);
+            SpotLight.position.set(3, 1, 2);
             SpotLight.target.position.set(0, 0, 0);
             SpotLight.castShadow = true;
             SpotLight.decay = 1.5;
@@ -307,7 +396,6 @@
             pmremCubeUVPacker.dispose();
 
             //
-
             initModel();
             initMaterials();
             initMaterialSelectionMenus();
@@ -337,13 +425,19 @@
     }
     ////INITIALISATION FIN////
 
+    ////REFRESH PAGE////
+    function reinitialise(){
+        window.location.reload()
+    }
+    ////REFRESH PAGE FIN////
+
     ////CHANGER BACKGROUND////
-    function changerFond(){
-        if (fond === 0){
-            scene.remove(mesh)
+    function changerFond() {
+        if (fond === 0) {
+            scene.remove(mesh);
             scene.background = new THREE.TextureLoader().load("textures/gris.jpg"); // (Ciel)
             scene.backgroundSphere = true;
-        }else if (fond === 1){
+        } else if (fond === 1) {
             let path = "textures/ocean/";
             let format = '.jpg';
             let urls = [
@@ -358,10 +452,10 @@
             let reflectionCube = THREE.ImageUtils.loadTextureCube(urls);
             reflectionCube.format = THREE.RGBFormat;
 
-            let shader = THREE.ShaderLib[ "cube" ];
-            shader.uniforms[ "tCube" ].value = reflectionCube;
+            let shader = THREE.ShaderLib["cube"];
+            shader.uniforms["tCube"].value = reflectionCube;
 
-            let material = new THREE.ShaderMaterial( {
+            let material = new THREE.ShaderMaterial({
                 fragmentShader: shader.fragmentShader,
                 vertexShader: shader.vertexShader,
                 uniforms: shader.uniforms,
@@ -374,6 +468,45 @@
         }
     }
     ////CHANGER BACKGROUND FIN////
+
+    ////CHANGER SOL////
+    function changerSol() {
+        if (checkboxSol.checked) {
+            if (sol === 0) {
+                scene.remove(meshFloor);
+                if (imageParcourir.files[0]) {
+                    meshFloor = new THREE.Mesh(
+                        new THREE.CircleGeometry(1, 50),
+                        new THREE.MeshStandardMaterial({
+                            map: new THREE.TextureLoader().load('image/' + imageParcourir.files[0].name),
+                            roughness: 1.0
+                        }));
+                } else {
+                    meshFloor = new THREE.Mesh(
+                        new THREE.CircleGeometry(1, 50),
+                        new THREE.MeshStandardMaterial({
+                            map: new THREE.TextureLoader().load('image/marbre.jpg'),
+                            roughness: 1.0
+                        }));
+                }
+                meshFloor.rotation.x -= Math.PI / 2;
+                meshFloor.receiveShadow = true;
+                scene.add(meshFloor);
+            } else if (sol === 1) {
+                scene.remove(meshFloor);
+                meshFloor = new THREE.Mesh(
+                    new THREE.CircleGeometry(1, 50),
+                    new THREE.MeshStandardMaterial({color: inputColor.value, roughness: 0.6}));
+                meshFloor.rotation.x -= Math.PI / 2;
+                meshFloor.receiveShadow = true;
+                scene.add(meshFloor);
+            }
+        } else {
+            scene.remove(meshFloor);
+        }
+
+    }
+    ////CHANGER SOL FIN////
 
     ////INITIALISATION MODEL////
     function initModel() {
@@ -404,7 +537,7 @@
     ////INITIALISATION MODEL FIN////
 
     ////UPDATE MODEL LIQUIDE////
-    function updateModelELiquide(){
+    function updateModelELiquide() {
         objetActuel = "E-Liquide";
         scene.remove(objModel);
         let dracoLoader = new DRACOLoader();
@@ -413,14 +546,14 @@
         let loader = new GLTFLoader();
         loader.setDRACOLoader(dracoLoader);
 
-            liens = "models/gltf/ambrosia/bouteille-ambrosia.gltf"
+        liens = "models/gltf/ambrosia/bouteille-ambrosia.gltf";
 
 
         loader.load(liens, function (gltf) {
             objModel = gltf.scene.children[0];
 
             objModel.traverse(function (child) {
-                child.type="Mesh";
+                child.type = "Mesh";
                 if (child.isMesh) {
                     child.material.envMap = envMap;
                 }
@@ -432,15 +565,14 @@
             if (objModel.getObjectByName('body')) {
                 modelParts.body.push(objModel.getObjectByName('body'));
             }
-            initMaterialSelectionMenus()
+            initMaterialSelectionMenus();
             updateMaterials();
-
         });
     }
     ////UPDATE MODEL E-LIQUIDE FIN////
 
     ////UPDATE MODEL CARTE////
-    function updateModelCarte(){
+    function updateModelCarte() {
         objetActuel = "Carte de visite";
         scene.remove(objModel);
         let dracoLoader = new DRACOLoader();
@@ -449,13 +581,13 @@
         let loader = new GLTFLoader();
         loader.setDRACOLoader(dracoLoader);
 
-            liens = "models/gltf/carte/carte.gltf"
+        liens = "models/gltf/carte/carte.gltf";
 
         loader.load(liens, function (gltf) {
             objModel = gltf.scene.children[0];
 
             objModel.traverse(function (child) {
-                child.type="Mesh";
+                child.type = "Mesh";
                 if (child.isMesh) {
                     child.material.envMap = envMap;
                 }
@@ -467,7 +599,7 @@
             if (objModel.getObjectByName('body')) {
                 modelParts.body.push(objModel.getObjectByName('body'));
             }
-            initMaterialSelectionMenus()
+            initMaterialSelectionMenus();
             updateMaterials();
 
         });
@@ -476,136 +608,60 @@
 
     ////INITIALISATION MATERIALS////
     function initMaterials() {
-
         materialsLib = {
             main: [
+                <?php
+                $produits = getAllProduit($bdd);
+                $etiquettes = getAllEtiquette($bdd);
+                $cartes = getAllCartes($bdd);
+                if ($etiquettes){
+                    while ($etiquette = $etiquettes->fetch_assoc()){
+                ?>
                 new THREE.MeshStandardMaterial(
                     {
-                        map: new THREE.TextureLoader().load("etiquettes/etiquette-belle-prune.jpg"),
-                        roughnessMap: new THREE.TextureLoader().load("etiquettes/etiquette-belle-prune-rgh.jpg"),
+                        map: new THREE.TextureLoader().load("<?=$etiquette['path_texture'] ?>"),
+                        roughnessMap: new THREE.TextureLoader().load("<?=$etiquette['path_rgh'] ?>"),
                         metalness: 0.0,
                         envMap: envMap,
                         envMapIntensity: 0.1,
-                        name: 'Étiquette Belle Prune'
+                        name: "<?=$etiquette['nom_texture']?>"
                     }),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load("etiquettes/etiquette-boree.jpg"),
-                        roughnessMap: new THREE.TextureLoader().load("etiquettes/etiquette-boree-rgh.jpg"),
-                        metalness: 0.0,
-                        envMap: envMap,
-                        envMapIntensity: 0.1,
-                        name: 'Étiquette Borée'
-                    }),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load("etiquettes/etiquette-crepe.jpg"),
-                        roughnessMap: new THREE.TextureLoader().load("etiquettes/etiquette-crepe-rgh.jpg"),
-                        metalness: 0.0,
-                        envMap: envMap,
-                        envMapIntensity: 0.1,
-                        name: 'Étiquette Crêpe'
-                    }),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load("etiquettes/etiquette-cupcake.jpg"),
-                        metalness: 0.0,
-                        roughnessMap: new THREE.TextureLoader().load("etiquettes/etiquette-cupcake-rgh.jpg"),
-                        envMap: envMap,
-                        envMapIntensity: 0.1,
-                        name: 'Étiquette Cupcake'
-                    }),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load("etiquettes/etiquette-euros.jpg"),
-                        metalness: 0.0,
-                        roughnessMap: new THREE.TextureLoader().load("etiquettes/etiquette-euros-rgh.jpg"),
-                        envMap: envMap,
-                        envMapIntensity: 0.1,
-                        name: 'Étiquette Euros'
-                    }),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load("etiquettes/etiquette-notos.jpg"),
-                        metalness: 0.0,
-                        roughnessMap: new THREE.TextureLoader().load("etiquettes/etiquette-notos-rgh.jpg"),
-                        envMap: envMap,
-                        envMapIntensity: 0.1,
-                        name: 'Étiquette Notos'
-                    }),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load("etiquettes/etiquette-super-beignet.jpg"),
-                        metalness: 0.0,
-                        roughnessMap: new THREE.TextureLoader().load("etiquettes/etiquette-super-beignet-rgh.jpg"),
-                        envMap: envMap,
-                        envMapIntensity: 0.1,
-                        name: 'Étiquette Super Beignet'
-                    }),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load("etiquettes/etiquette-zephyr.jpg"),
-                        metalness: 0.0,
-                        roughnessMap: new THREE.TextureLoader().load("etiquettes/etiquette-zephyr-rgh.jpg"),
-                        envMap: envMap,
-                        envMapIntensity: 0.1,
-                        name: 'Étiquette Zephyr'
-                    }),
+                <?php
+                    }
+                }
+                ?>
             ],
-            Carte : [
+            Carte:[
+                <?php
+                if ($cartes){
+                while ($carte = $cartes->fetch_assoc()){
+                ?>
                 new THREE.MeshStandardMaterial(
                     {
-                        map: new THREE.TextureLoader().load( "cartetextures/dorure-or-noir/carte-color.jpg" ),
-                        roughnessMap: new THREE.TextureLoader().load( "cartetextures/dorure-or-noir/carte-rgh.jpg" ),
-                        metalnessMap: new THREE.TextureLoader().load( "cartetextures/dorure-or-noir/carte-metal.jpg" ),
-                        //normalMap: new THREE.TextureLoader().load( "cartetextures/dorure-or-noir/carte-normal.jpg" ) ,
+                        map: new THREE.TextureLoader().load("<?=$carte['path_texture']?>"),
+                        roughnessMap: new THREE.TextureLoader().load("<?=$carte['path_rgh']?>"),
+                        <?php
+                            if (!empty($carte['path_metal'])){
+                        ?>
+                                metalnessMap: new THREE.TextureLoader().load("<?= $carte['path_metal'] ?>"),
+                        <?php
+                            }
+                        ?>
+                        <?php
+                            if (!empty($carte['path_normal'])){
+                        ?>
+                                normalMap: new THREE.TextureLoader().load( "<?=$carte['path_normal'] ?>" ) ,
+                        <?php
+                            }
+                        ?>
                         envMap: envMap,
                         envMapIntensity: 0.1,
-                        name: 'Finition dorée sur fond noir' } ),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load( "cartetextures/dorure-or-blanc/carte-color-blanc.jpg" ),
-                        roughnessMap: new THREE.TextureLoader().load( "cartetextures/dorure-or-blanc/carte-rgh-blanc.jpg" ),
-                        metalnessMap: new THREE.TextureLoader().load( "cartetextures/dorure-or-blanc/carte-metal-blanc.jpg" ),
-                        //normalMap: new THREE.TextureLoader().load( "cartetextures/dorure-or-blanc/carte-normal-blanc.jpg" ) ,
-                        envMap: envMap,
-                        envMapIntensity: 0.0,
-                        name: 'Finition dorée sur fond blanc' } ),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load( "cartetextures/dorure-argent-noir/carte-color-argent.jpg" ),
-                        roughnessMap: new THREE.TextureLoader().load( "cartetextures/dorure-argent-noir/carte-rgh-argent.jpg" ),
-                        metalnessMap: new THREE.TextureLoader().load( "cartetextures/dorure-argent-noir/carte-metal-argent.jpg" ),
-                        //normalMap: new THREE.TextureLoader().load( "cartetextures/dorure-argent-noir/carte-normal-argent.jpg" ),
-                        envMap: envMap,
-                        envMapIntensity: 0.1,
-                        name: 'Finition dorée argent sur fond noir'  } ),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load( "cartetextures/vernis-selectif/vernis-color.jpg" ),
-                        roughnessMap: new THREE.TextureLoader().load( "cartetextures/vernis-selectif/vernis-rgh.jpg" ),
-                        metalnessMap: 0.0,
-                        envMap: envMap,
-                        envMapIntensity: 0.4,
-                        name: 'Vernis sélectif' } ),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load( "cartetextures/vernis-3d/vernis-3d-color.jpg" ),
-                        metalnessMap: 0.0,
-                        roughnessMap: new THREE.TextureLoader().load( "cartetextures/vernis-3d/vernis-3d-rgh.jpg" ),
-                        //normalMap: new THREE.TextureLoader().load( "cartetextures/vernis-3d/vernis-3d-normal.jpg" ) ,
-                        envMap: envMap,
-                        envMapIntensity: 0.1,
-                        name: 'Vernis sélectif 3D' } ),
-                new THREE.MeshStandardMaterial(
-                    {
-                        map: new THREE.TextureLoader().load( "cartetextures/gauffrage/gauffrage-color.jpg" ),
-                        metalnessMap:0.0,
-                        roughnessMap: new THREE.TextureLoader().load( "cartetextures/gauffrage/gauffrage-rgh.jpg" ),
-                        normalMap: new THREE.TextureLoader().load( "cartetextures/gauffrage/gauffrage-normal.jpg" ) ,
-                        envMap: envMap,
-                        envMapIntensity: 0.1,
-                        name: 'Gauffrage' } ),
+                        name: "<?=$carte['nom_texture']?>"
+                    }),
+                <?php
+                }
+                }
+                ?>
             ],
         };
     }
@@ -620,32 +676,33 @@
             option.value = name;
             menu.add(option);
         }
-        if (objetActuel === "E-Liquide"){
-            bodyMatSelect.innerHTML="";
+
+        if (objetActuel === "E-Liquide") {
+            bodyMatSelect.innerHTML = "";
             affichageGrille();
 
             materialsLib.main.forEach(function (material) {
                 addOption(material.name, bodyMatSelect);
             });
-        }else if (objetActuel === "Carte de visite"){
-            bodyMatSelect.innerHTML="";
+        } else if (objetActuel === "Carte de visite") {
+            bodyMatSelect.innerHTML = "";
             affichageGrille();
 
             materialsLib.Carte.forEach(function (material) {
                 addOption(material.name, bodyMatSelect);
             });
         }
-            bodyMatSelect.selectedIndex = 0;
+        bodyMatSelect.selectedIndex = 0;
     }
     ////INITIALISATION MENU MATERIALS FIN////
 
     ////UPDATE MENU MATERIALS////
     function updateMaterials() {
-        if(objetActuel === "E-Liquide") {
+        if (objetActuel === "E-Liquide") {
             let bodyMat = materialsLib.main[bodyMatSelect.selectedIndex];
 
             modelParts.body.forEach(part => part.material = bodyMat);
-        }else if (objetActuel === "Carte de visite") {
+        } else if (objetActuel === "Carte de visite") {
             let bodyMatt = materialsLib.Carte[bodyMatSelect.selectedIndex];
             modelParts.body.forEach(part => part.material = bodyMatt);
         }
@@ -653,49 +710,49 @@
     ////UPDATE MENU MATERIALS FIN////
 
     ////CLICK FILES USDZ////
-    function OnOffUsdz(){
-        t +=1;
-        if (t === 1){
+    function OnOffUsdz() {
+        t += 1;
+        if (t === 1) {
         } else {
-            t =0
+            t = 0
         }
         affichageGrille()
     }
     ////CLICK FILES USDZ FIN////
 
     ////DISPLAY GRID USDZ////
-    function affichageGrille(){
-        let src={
-            0:'miniatures/belle-prune.jpg',
-            1:'miniatures/boree.jpg',
-            2:'miniatures/crepe.jpg',
-            3:'miniatures/cupcake.jpg',
-            4:'miniatures/euros.jpg',
-            5:'miniatures/notos.jpg',
-            6:'miniatures/super-beignet.jpg',
-            7:'miniatures/zephyr.jpg'
+    function affichageGrille() {
+        let src = {
+            0: 'miniatures/belle-prune.jpg',
+            1: 'miniatures/boree.jpg',
+            2: 'miniatures/crepe.jpg',
+            3: 'miniatures/cupcake.jpg',
+            4: 'miniatures/euros.jpg',
+            5: 'miniatures/notos.jpg',
+            6: 'miniatures/super-beignet.jpg',
+            7: 'miniatures/zephyr.jpg'
         };
-        let srcCarte={
-            0:'miniatures/FinitionDoreeSurFondNoir.png',
-            1:'miniatures/FinitionDoreeSurFondBlanc.png',
-            2:'miniatures/FinitionDoreeArgentSurFondNoir.png',
-            3:'miniatures/VernisSelectif.png',
-            4:'miniatures/VernisSelectif3D.png',
-            5:'miniatures/Gauffrage.png'
+        let srcCarte = {
+            0: 'miniatures/FinitionDoreeSurFondNoir.png',
+            1: 'miniatures/FinitionDoreeSurFondBlanc.png',
+            2: 'miniatures/FinitionDoreeArgentSurFondNoir.png',
+            3: 'miniatures/VernisSelectif.png',
+            4: 'miniatures/VernisSelectif3D.png',
+            5: 'miniatures/Gauffrage.png'
         };
-        grilleSelect.style.display="";
-        grilleSelect.innerHTML=null;
-        if (t===0){
-            if(objetActuel === "E-Liquide"){
+        grilleSelect.style.display = "";
+        grilleSelect.innerHTML = null;
+        if (t === 0) {
+            if (objetActuel === "E-Liquide") {
                 for (let i = 0; i < 8; i++) {
-                    grilleSelect.innerHTML+= '<a href="usdz/bottle-'+(i+1)+'.usdz">'+'<img class="miniature" src="'+src[i]+'"></a>'
+                    grilleSelect.innerHTML += '<a href="usdz/bottle-' + (i + 1) + '.usdz">' + '<img class="miniature" src="' + src[i] + '"></a>'
                 }
-            }else if (objetActuel === "Carte de visite"){
+            } else if (objetActuel === "Carte de visite") {
                 for (let i = 0; i < 6; i++) {
-                    grilleSelect.innerHTML+= '<a href="#">'+'<img class="miniature" src="'+srcCarte[i]+'"></a>'
+                    grilleSelect.innerHTML += '<a href="#">' + '<img class="miniature" src="' + srcCarte[i] + '"></a>'
                 }
             }
-        }else{
+        } else {
             grilleSelect.style.display = "none";
         }
     }
@@ -717,11 +774,11 @@
     ////UPDATE FIN////
 
     ////CLICK ROTATION 360////
-    function OnOffRotation(){
-        n +=1;
-        if (n === 1){
+    function OnOffRotation() {
+        n += 1;
+        if (n === 1) {
         } else {
-            n =0
+            n = 0
         }
         animate()
     }
@@ -730,10 +787,16 @@
     ////ANIMATION 360////
     function animate() {
         if (n === 0) {
+            console.log(objModel.rotation.z)
             objModel.rotation.z += 0.01;
-            meshFloor.rotation.z -=0.01;
+            meshFloor.rotation.z -= 0.01;
             requestAnimationFrame(animate);
             render()
+            if (objModel.rotation.z === 4.709245813246191){
+                n=1;
+                objModel.rotation.z = -1.570754186753754;
+                render()
+            }
         } else {
             render()
         }
@@ -743,13 +806,15 @@
     ////RENDER////
     function render() {
         renderer.render(scene, scnCamera);
+        recorder.capture(renderer.domElement);
+
     }
     ////RENDER FIN////
 
     ////CLICK INFO BUTTON////
-    function OnOffInfo(){
+    function OnOffInfo() {
         i += 1;
-        if (i === 1){
+        if (i === 1) {
         } else {
             i = 0;
         }
@@ -758,40 +823,37 @@
     ////CLICK INFO BUTTON FIN////
 
     ////INFO TEXT BUTTON////
-    function infoProduit(){
-        if (i === 1) {
-            if (bodyModelSelect.value === "E-Liquide"){
-                infoTxt.style.display=null;
+    function infoProduit() {
+        if (i === 0) {
+            if (objetActuel === "E-Liquide") {
+                infoTxt.style.display = null;
                 infoTxt.innerHTML = "Vous pouvez voir quelques exemples d'étiquettes que nous sommes capables de designer pour vous."
-            }else if (bodyModelSelect.value === "Carte de visite"){
-                infoTxt.style.display=null;
+            } else if (objetActuel === "Carte de visite") {
+                infoTxt.style.display = null;
                 infoTxt.innerHTML = "Vous pouvez voir quelques exemples de carte de visite avec plusieurs designs que nous sommes capables de réaliser pour vous "
             }
         } else {
-            infoTxt.style.display="none"
+            infoTxt.style.display = "none"
         }
     }
     ////INFO TEXT BUTTON FIN////
 
     ////CLICK MENU////
-    function OnOffMenu(){
-        x +=1;
-        if (x === 1){
+    function OnOffMenu() {
+        x += 1;
+        if (x === 1) {
         } else {
-            x =0
+            x = 0
         }
         displayMenu()
     }
     ////CLICK MENU FIN////
 
     ////DISPLAY MENU////
-
     function displayMenu() {
         if (x === 0) {
-            inter.style.display = "none"
             sidebare.style.display = "none"
         } else {
-            // inter.style.display = ""
             sidebare.style.display = ""
         }
     }
@@ -799,122 +861,190 @@
 
     ////CHECKBOX AFFICHAGE////
     function checkboxAfficher() {
-        if (checkboxAffichage.checked){
+        if (checkboxAffichage.checked) {
             grilleSelect.style.display = null;
             info.style.display = null;
-            if (infoTxt.style.display !== "none"){
+            if (infoTxt.style.display !== "none") {
                 infoTxt.style.display = null;
             }
-            inter.style.display = null;
-            menuLogo.style.display = null
-        }else {
+            hamburgerImg.style.display = null
+        } else {
             grilleSelect.style.display = "none";
             info.style.display = "none";
             infoTxt.style.display = "none";
-            inter.style.display = "none";
-            menuLogo.style.display = "none"
+            hamburgerImg.style.display = "none"
         }
     }
     ////CHECKBOX AFFICHAGE FIN////
 
     ////OnOff HEADER UI////
-    function OnOffHeaderUi(){
-        a +=1;
-        if (a === 1){
+    function OnOffHeaderUi() {
+        a += 1;
+        if (a === 1) {
         } else {
-            a =0
+            a = 0
         }
         displayUi()
     }
-    ////OnOff HEADER UI FIN////
 
-    function OnOffHeaderUi1(){
-        b +=1;
-        if (b === 1){
+    function OnOffHeaderUi1() {
+        b += 1;
+        if (b === 1) {
         } else {
-            b =0
+            b = 0
         }
         displayUi1()
     }
 
-
-    function OnOffHeaderUi2(){
-        c +=1;
-        if (c === 1){
+    function OnOffHeaderUi2() {
+        c += 1;
+        if (c === 1) {
         } else {
-            c =0
+            c = 0
         }
         displayUi2()
     }
 
-    function OnOffHeaderUi3(){
-        d +=1;
-        if (d === 1){
+    function OnOffHeaderUi3() {
+        d += 1;
+        if (d === 1) {
         } else {
-            d =0
+            d = 0
         }
         displayUi3()
     }
 
-    function OnOffHeaderUi4(){
-        e +=1;
-        if (e === 1){
+    function OnOffHeaderUi4() {
+        e += 1;
+        if (e === 1) {
         } else {
-            e =0
+            e = 0
         }
         displayUi4()
     }
+    ////OnOff HEADER UI FIN////
 
     ////DISPLAY UI////
-    function displayUi(){
-        if (a ===1){
-            contentUi.style.display = "none";
-        }else{
-            contentUi.style.display = "";
+    function displayUi() {
+        if (a === 1) {
+            contentUi.style.transition= '';
+            contentUi.style.overflow= '';
+            contentUi.style.maxHeight = '';
+        } else {
+            contentUi.style.transition= 'max-height 0.50s ease-out';
+            contentUi.style.overflow= 'visible';
+            contentUi.style.maxHeight = '200px';
         }
     }
     ////DISPLAY UI FIN////
 
     ////DISPLAY UI 1////
-    function displayUi1(){
-        if (b ===1){
-            contentUi1.style.display = "none";
-        }else{
-            contentUi1.style.display = "";
+    function displayUi1() {
+        if (b === 1) {
+            contentUi1.style.transition= '';
+            contentUi1.style.overflow= '';
+            contentUi1.style.maxHeight = '';
+        } else {
+            contentUi1.style.transition= 'max-height 0.50s ease-out';
+            contentUi1.style.overflow= 'visible';
+            contentUi1.style.maxHeight = '200px';
         }
     }
     ////DISPLAY UI FIN////
 
     ////DISPLAY UI 2////
-    function displayUi2(){
-        if (c ===1){
-            contentUi2.style.display = "none";
-        }else{
-            contentUi2.style.display = "";
+    function displayUi2() {
+        if (c === 1) {
+            contentUi2.style.transition= '';
+            contentUi2.style.overflow= '';
+            contentUi2.style.maxHeight = '';
+        } else {
+            contentUi2.style.transition= 'max-height 0.50s ease-out';
+            contentUi2.style.overflow= 'visible';
+            contentUi2.style.maxHeight = '200px';
         }
     }
     ////DISPLAY UI FIN////
 
     ////DISPLAY UI 3////
-    function displayUi3(){
-        if (d ===1){
-            contentUi3.style.display = "none";
-        }else{
-            contentUi3.style.display = "";
+    function displayUi3() {
+        if (d === 1) {
+            contentUi3.style.transition= '';
+            contentUi3.style.overflow= '';
+            contentUi3.style.maxHeight = '';
+        } else {
+            contentUi3.style.transition= 'max-height 0.50s ease-out';
+            contentUi3.style.overflow= 'visible';
+            contentUi3.style.maxHeight = '200px';
         }
     }
     ////DISPLAY UI FIN////
 
     ////DISPLAY UI 3////
-    function displayUi4(){
-        if (e ===1){
-            contentUi4.style.display = "none";
-        }else{
-            contentUi4.style.display = "";
+    function displayUi4() {
+        if (e === 0) {
+            contentUi4.style.transition= '';
+            contentUi4.style.overflow= '';
+            contentUi4.style.maxHeight = '';
+        } else {
+            contentUi4.style.transition= 'max-height 0.50s ease-out';
+            contentUi4.style.overflow= 'visible';
+            contentUi4.style.maxHeight = '200px';
         }
     }
     ////DISPLAY UI FIN////
 
+    function takeScreenshot() {
+        let width = "1080";
+        let height = "920";
+        scnCamera.aspect = width / height;
+        scnCamera.updateProjectionMatrix();
+        renderer.setSize(  width, height );
+
+        renderer.render( scene, scnCamera, null, false );
+
+        const dataURL = renderer.domElement.toDataURL( 'image/jpg' );
+
+        // Marche uniquement pour les navigateurs autres que Edge et IE //
+            if (window.navigator.msSaveBlob){
+                alert("Pas disponible sur IE/Edge, utilisez un autre navigateur")
+            }else{
+                const a = document.createElement("a");
+
+                document.body.appendChild(a);
+                a.href = dataURL;
+                a.download = "screenshot.jpg";
+                a.click();
+                document.body.removeChild(a);
+            }
+        // FIN//
+
+        // reset to old dimensions (cheat version)
+        onWindowResize();
+    }
+
+    function setupButtons(){
+        const $start = document.getElementById('start');
+        const $stop = document.getElementById('stop');
+        $start.addEventListener('click', e => {
+            e.preventDefault();
+            recorder.start();
+            n=0;
+            animate();
+            $start.style.display = 'none';
+            $stop.style.display = 'block';
+        }, false);
+
+        $stop.addEventListener('click', e => {
+            e.preventDefault();
+            recorder.stop();
+            n=1;
+            animate();
+            $stop.style.display = 'none';
+            recorder.save();
+        }, false);
+    }
+    setupButtons()
     init();
 
 </script>

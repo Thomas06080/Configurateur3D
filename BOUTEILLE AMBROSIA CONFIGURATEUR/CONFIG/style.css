@@ -1,0 +1,34 @@
+#formulaire{
+    border: solid 1px grey;
+    width: 30rem;
+    border-radius: 20px;
+    margin: 10px;
+    padding: 10px;
+    background-image: linear-gradient(#3B3B3B, #434141);
+}
+
+#titre_form{
+    text-align: center;
+    color: white;
+}
+
+#div_form{
+    /*border: solid 1px;*/
+    /*border-radius: 10px;*/
+    padding: 5px;
+    color: white;
+}
+
+#select_produit{
+    border-radius: 5px;
+    width: 30%;
+}
+
+table {
+    border-collapse: collapse;
+
+}
+td ,th{
+    border:1px solid black;
+    padding: 5px;
+}
